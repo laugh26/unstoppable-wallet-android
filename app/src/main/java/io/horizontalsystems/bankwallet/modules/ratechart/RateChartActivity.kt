@@ -2,6 +2,7 @@ package io.horizontalsystems.bankwallet.modules.ratechart
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import io.horizontalsystems.bankwallet.R
@@ -218,6 +219,11 @@ class RateChartActivity : BaseActivity(), Chart.Listener {
             rsiChartIndicator.setStateEnabled(enabled)
         })
 
+        presenterView.setAlertNotificationActive.observe(this, Observer { active ->
+            notificationIcon.isVisible = true
+            notificationIcon.setImageResource(if (active) R.drawable.ic_notification_enabled_16 else R.drawable.ic_notification_16)
+        })
+
     }
 
     private fun getHistogramColor(value: Float): Int {
@@ -255,7 +261,7 @@ class RateChartActivity : BaseActivity(), Chart.Listener {
             presenter.toggleRsi()
         }
 
-        notificationIcon.setOnClickListener {
+        notificationClickArea.setOnClickListener {
             BottomNotificationMenu.show(supportFragmentManager, NotificationMenuMode.All, coinTitle, coinCode)
         }
     }
